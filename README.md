@@ -20,7 +20,7 @@ docs/        Screenshots and notes for the PDF documentation
 
 ## Resources
 - [Assignment 2 brief](docs/Assignment2_Brief.pdf): full requirements, submission and marking rubric
-- Documentation: shared Google Doc: *(paste link here)*, exported to PDF for submission
+- Documentation: shared Google Doc: , exported to PDF for submission
 
 ## How to run
 1. Open `contracts/VotingPlatform.sol` in Remix.
