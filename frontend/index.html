@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Decision Voting Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Decision Voting Platform</h1>
+  <button id="connectBtn">Connect Wallet</button>
+
+  <!-- Part 1: wallet info -->
+  <h2>My Wallet</h2>
+  <p>Address: <span id="walletAddress">Not connected</span></p>
+  <p>Network: <span id="walletNetwork">-</span></p>
+  <p>Balance: <span id="walletBalance">-</span></p>
+
+  <!-- Part 1: basic session info (only admin/state/topic exist so far) -->
+  <h2>Voting Session</h2>
+  <p>Admin address: <span id="adminAddress">-</span></p>
+  <p>Status: <span id="sessionState">-</span></p>
+  <p>Topic: <span id="sessionTopic">-</span></p>
+
+  <!-- TODO Part 2: show voting options (needs a getter added to the contract) -->
+  <!-- TODO Part 3: admin panel (prepare round, eligibility) -->
+  <!-- TODO Part 4: participant panel (cast vote, my status) -->
+  <!-- TODO Part 5: results panel -->
+  <!-- TODO Part 6: warnings next to restricted actions -->
+
+  <script src="web3.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

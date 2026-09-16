@@ -1,6 +1,6 @@
 # Decision Voting Platform
 
-INTE2628/2679 Developing Blockchain Applications — Assignment 2
+INTE2628/2679 Developing Blockchain Applications: Assignment 2
 
 A multi-round decision voting platform. The Admin (contract deployer) sets up
 a voting round with a topic and text options, manages who's eligible to vote,
@@ -8,8 +8,8 @@ and reveals results once voting ends. Participants connect with MetaMask,
 vote once per round, and can check their own status.
 
 ## Team
-- Ethan patten-cox (S4167742) — GitHub handle
-- Name (Student ID) — GitHub handle
+- Ethan patten-cox (S4167742)
+- Name (Student ID)
 
 ## Project structure
 ```
@@ -19,11 +19,12 @@ docs/        Screenshots and notes for the PDF documentation
 ```
 
 ## Resources
-- [Assignment 2 brief](docs/Assignment2_Brief.pdf) — full requirements, submission and marking rubric
+- [Assignment 2 brief](docs/Assignment2_Brief.pdf): full requirements, submission and marking rubric
+- Documentation: shared Google Doc: *(paste link here)*, exported to PDF for submission
 
 ## How to run
 1. Open `contracts/VotingPlatform.sol` in Remix.
-2. Compile, then deploy using Injected Provider — MetaMask (Sepolia testnet).
+2. Compile, then deploy using Injected Provider MetaMask (Sepolia testnet).
 3. Copy the deployed contract address into `CONTRACT_ADDRESS` in `frontend/app.js`.
 4. From the `frontend/` folder run:
    ```
@@ -44,9 +45,10 @@ docs/        Screenshots and notes for the PDF documentation
 - [ ] View functions (session info, my vote, admin checks, results)
 
 ### Frontend
-- [ ] Connect MetaMask wallet
-- [ ] Show wallet info (address / network / balance)
-- [ ] Show session info (topic / options / status)
+- [x] Connect MetaMask wallet (Part 1)
+- [x] Show wallet info (address / network / balance) (Part 1)
+- [x] Show basic session info: admin / status / topic (Part 1)
+- [ ] Show voting options (needs a contract getter)
 - [ ] Admin panel (prepare round, eligibility, end voting, reveal results)
 - [ ] Participant panel (vote, own status)
 - [ ] Warnings shown next to restricted actions
@@ -58,8 +60,10 @@ docs/        Screenshots and notes for the PDF documentation
 - [ ] Screenshots with captions
 - [ ] Reflection
 
+
+
 ## Notes
-- Built from concepts covered in Weeks 1–8 (structs, mappings + parallel
+- Built from concepts covered in Weeks 1-8 (structs, mappings + parallel
   arrays, enums, `require`, Web3.js `.call()`/`.send()`), no outside
   frameworks or generators.
 - Based on our Assignment 1 voting contract, adapted for text-based options,

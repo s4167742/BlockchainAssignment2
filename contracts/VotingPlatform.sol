@@ -3,8 +3,8 @@ pragma solidity ^0.8.19;
 
 contract VotingPlatform {
 
-    // ---- Part 1: roles & lifecycle state (done) ----
-    // ---- Part 2: round setup (topic + text options) (done) ----
+    //Part 1: roles & lifecycle state (done)
+    //Part 2: round setup (topic + text options) (done)
     // TODO Part 3: voter eligibility (exclude / reinstate)
     // TODO Part 4: casting votes
     // TODO Part 5: ending voting + revealing results
@@ -28,7 +28,7 @@ contract VotingPlatform {
         state = VotingState.NotStarted;
     }
 
-    // ---- Part 2: round setup (topic + text options) ----
+    //Part 2: round setup (topic + text options)
 
     // One voting option and its running vote total.
     struct Option {
