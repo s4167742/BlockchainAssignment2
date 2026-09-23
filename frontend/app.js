@@ -1,19 +1,24 @@
-
 // Decision Voting Platform - frontend logic
-// Part 1: connect wallet, show wallet info, show basic session info
-
+// Part 1: connect wallet, show wallet info
+// Part 2: show session status + voting options (using getMyStatus)
 
 // TODO: paste the deployed contract address here after deploying in Remix
 const CONTRACT_ADDRESS = "PASTE_YOUR_DEPLOYED_CONTRACT_ADDRESS_HERE";
 
 // ABI only needs entries for what the contract has so far.
-// admin, state and topic are "public" variables, so Solidity auto-generates
-// a getter function for each - that's why they appear here even though we
-// never wrote an "admin()" function ourselves.
 const CONTRACT_ABI = [
-  { "inputs": [], "name": "admin", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
-  { "inputs": [], "name": "state", "outputs": [{ "internalType": "enum VotingPlatform.VotingState", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" },
-  { "inputs": [], "name": "topic", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }
+  { "inputs": [], "name": "topic", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "getOptionText", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" },
+  {
+    "inputs": [], "name": "getMyStatus", "stateMutability": "view", "type": "function",
+    "outputs": [
+      { "internalType": "enum VotingPlatform.VotingState", "name": "currentState", "type": "uint8" },
+      { "internalType": "bool", "name": "isAdmin", "type": "bool" },
+      { "internalType": "bool", "name": "isExcluded", "type": "bool" },
+      { "internalType": "bool", "name": "voted", "type": "bool" },
+      { "internalType": "uint256", "name": "optionCount", "type": "uint256" }
+    ]
+  }
 ];
 
 // Matches the VotingState enum order in the contract
@@ -39,7 +44,7 @@ async function connectWallet() {
   document.getElementById("connectBtn").textContent = "Connected";
 
   await showWalletInfo();
-  await showSessionInfo();
+  await refreshStatus();
 }
 
 // Show the connected wallet's address, network and balance
@@ -54,15 +59,30 @@ async function showWalletInfo() {
   document.getElementById("walletBalance").textContent = balanceEth + " ETH";
 }
 
-// Show admin address, current phase and topic (only what the contract exposes so far)
-async function showSessionInfo() {
-  const admin = await contract.methods.admin().call();
-  const state = await contract.methods.state().call();
+// One call gives us everything about this wallet + the round.
+// We'll call this again after every admin/participant action later on,
+// so the page always reflects the latest on-chain state.
+async function refreshStatus() {
   const topic = await contract.methods.topic().call();
+  const status = await contract.methods.getMyStatus().call({ from: userAddress });
 
-  document.getElementById("adminAddress").textContent = admin;
-  document.getElementById("sessionState").textContent = STATE_LABELS[state];
+  document.getElementById("sessionState").textContent = STATE_LABELS[status.currentState];
   document.getElementById("sessionTopic").textContent = topic || "(no round prepared yet)";
+  document.getElementById("userRole").textContent = status.isAdmin ? "Admin" : "Participant";
+
+  // Load each option's text (one call per option - fine for a small list)
+  const optionsList = document.getElementById("optionsList");
+  optionsList.innerHTML = "";
+  const count = Number(status.optionCount);
+  for (let i = 0; i < count; i++) {
+    const text = await contract.methods.getOptionText(i).call();
+    const li = document.createElement("li");
+    li.textContent = (i + 1) + ". " + text;
+    optionsList.appendChild(li);
+  }
+
+  // TODO Part 3: use status.isExcluded / status.voted to drive the
+  // participant panel and warnings once they exist in the HTML.
 }
 
 document.getElementById("connectBtn").addEventListener("click", connectWallet);
