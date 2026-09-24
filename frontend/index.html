@@ -58,9 +58,26 @@
   <button id="revealResultsBtn">Reveal Results</button>
   <p class="warning" id="revealResultsWarning"></p>
 
-  <!-- TODO Part 4: participant panel (cast vote, my status) -->
-  <!-- TODO Part 5: results panel -->
-  <!-- TODO Part 6: participant-side warnings -->
+  <!-- Part 4: participant panel -->
+  <h2>Participant Panel</h2>
+
+  <h3>Cast Your Vote</h3>
+  <div id="voteOptions"></div>
+  <button id="submitVoteBtn">Submit Vote</button>
+  <p class="warning" id="submitVoteWarning"></p>
+
+  <h3>My Status</h3>
+  <p>Eligible: <span id="myEligible">-</span></p>
+  <p>Have I voted: <span id="myVoted">-</span></p>
+  <p>My choice: <span id="myChoice">-</span></p>
+
+  <!-- Part 5: results panel -->
+  <h2>Results</h2>
+  <p id="resultsWarning" class="warning"></p>
+  <table id="resultsTable">
+    <thead><tr><th>Option</th><th>Votes</th><th>Winner?</th></tr></thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
 
   <script src="web3.min.js"></script>
   <script src="app.js"></script>
