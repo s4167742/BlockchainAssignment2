@@ -2,34 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decision Voting Platform</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>Decision Voting Platform</h1>
-  <button id="connectBtn">Connect Wallet</button>
 
-  <!-- Part 1: wallet info -->
+  <!--setup: paste the contract address and connect metamask-->
+  <h2>Setup</h2>
+  <p>
+    Contract address: <input type="text" id="contractAddressInput" size="50">
+    <button onclick="loadContract()">Load Contract</button>
+  </p>
+  <p>
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <button onclick="refreshPage()">Refresh</button>
+    (click Refresh after switching accounts in MetaMask)
+  </p>
+  <p id="setupMessage"></p>
+
+  <hr>
+
+  <!--the connected wallet and what the contract says about it-->
   <h2>My Wallet</h2>
   <p>Address: <span id="walletAddress">Not connected</span></p>
   <p>Network: <span id="walletNetwork">-</span></p>
   <p>Balance: <span id="walletBalance">-</span></p>
+  <p>Role: <span id="myRole">-</span></p>
+  <p>Eligible to vote: <span id="myEligibility">-</span></p>
+  <p>Voted this round: <span id="myVoted">-</span></p>
 
-  <!-- Part 2: session info + options -->
+  <hr>
+
+  <!--round info anyone can see, vote counts are not shown here-->
   <h2>Voting Session</h2>
-  <p>My role: <span id="userRole">-</span></p>
-  <p>Status: <span id="sessionState">-</span></p>
+  <p>Admin address: <span id="adminAddress">-</span></p>
+  <p>Round prepared: <span id="roundPrepared">-</span></p>
+  <p>Voting status: <span id="sessionState">-</span></p>
+  <p>Results available: <span id="resultsAvailable">-</span></p>
   <p>Topic: <span id="sessionTopic">-</span></p>
   <p>Options:</p>
-  <ul id="optionsList"></ul>
+  <ol id="optionList" start="0"></ol>
 
-  <!-- TODO Part 3: admin panel (prepare round, eligibility) -->
-  <!-- TODO Part 4: participant panel (cast vote, my status) -->
-  <!-- TODO Part 5: results panel -->
-  <!-- TODO Part 6: warnings next to restricted actions -->
+  <hr>
+
+  <!--participant actions: vote and see your own vote-->
+  <h2>Participant</h2>
+
+  <h3>Cast Your Vote</h3>
+  <div id="voteChoices"></div>
+  <p>
+    Option number: <input type="number" id="voteOptionInput" min="0" oninput="updateWarnings()">
+    <button onclick="submitVote()">Submit Vote</button>
+  </p>
+  <p id="warnVote" style="color: red"></p>
+  <p id="msgVote"></p>
+
+  <h3>My Vote</h3>
+  <p><button onclick="viewMyVote()">View My Vote</button> <span id="myVoteResult"></span></p>
+  <p id="warnMyVote" style="color: red"></p>
+  <p id="msgMyVote"></p>
+
+  <hr>
+
+  <!--admin actions, left visible for everyone so the contract can be seen refusing them-->
+  <h2>Admin</h2>
+
+  <h3>Prepare a Voting Round</h3>
+  <p>Topic: <input type="text" id="topicInput" size="50"></p>
+  <div id="optionInputs">
+    <p>Option 0: <input type="text" class="optionInput" size="40"></p>
+    <p>Option 1: <input type="text" class="optionInput" size="40"></p>
+  </div>
+  <p>
+    <button onclick="addOptionInput()">Add Another Option</button>
+    <button onclick="removeOptionInput()">Remove Last Option</button>
+  </p>
+  <p><button onclick="prepareRound()">Prepare Round</button></p>
+  <p id="warnPrepare" style="color: red"></p>
+  <p id="msgPrepare"></p>
+
+  <h3>Voter Eligibility</h3>
+  <p>Participant address: <input type="text" id="participantInput" size="50"></p>
+  <p>
+    <button onclick="excludeParticipant()">Exclude Participant</button>
+    <button onclick="reinstateParticipant()">Reinstate Participant</button>
+    <button onclick="checkParticipantStatus()">Check Participant Status</button>
+  </p>
+  <p id="warnEligibility" style="color: red"></p>
+  <p id="warnStatusCheck" style="color: red"></p>
+  <p id="msgEligibility"></p>
+
+  <p><button onclick="viewExcludedList()">View Excluded List</button></p>
+  <ul id="excludedList"></ul>
+  <p id="warnExcludedList" style="color: red"></p>
+  <p id="msgExcludedList"></p>
+
+  <h3>End and Reveal</h3>
+  <p><button onclick="endRound()">End Round</button></p>
+  <p id="warnEnd" style="color: red"></p>
+  <p id="msgEnd"></p>
+
+  <p><button onclick="revealResults()">Reveal Results</button></p>
+  <p id="warnReveal" style="color: red"></p>
+  <p id="msgReveal"></p>
+
+  <hr>
+
+  <!--results, only readable after the admin reveals them-->
+  <h2>Results</h2>
+  <p><button onclick="showResults()">Show Results</button></p>
+  <p id="warnResults" style="color: red"></p>
+  <p id="msgResults"></p>
+  <table id="resultsTable" border="1">
+    <thead><tr><th>#</th><th>Option</th><th>Votes</th><th>Winner</th></tr></thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+  <p id="winnerText"></p>
+
+  <hr>
+
+  <!--transaction receipts, events and errors-->
+  <h2>Activity Log</h2>
+  <p><button onclick="clearLog()">Clear Log</button></p>
+  <div id="activityLog"></div>
 
   <script src="web3.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

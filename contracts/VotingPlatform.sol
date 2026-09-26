@@ -55,6 +55,7 @@ contract VotingPlatform {
 
     //who the admin has blocked from voting this round
     mapping(address => bool) private excluded;
+    
     //same info as a list, since you cant loop a mapping
     //lets the admin read the list back and lets prepareRound clear it
     address[] private excludedList;
